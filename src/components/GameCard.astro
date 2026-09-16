@@ -2,12 +2,19 @@
 import type { Game } from '../types/game';
 import Tag from './Tag.astro';
 import ArrowRight from '../assets/icons/arrow-right.svg';
+import { clampRating } from '../lib/ratings';
 
 interface Props {
     game: Game;
 }
 
 const { game } = Astro.props;
+
+/** Renders a whole-star-only glyph string (no half stars) for the card. */
+function formatWholeStars(rating: number): string {
+    const fullStars = Math.round(clampRating(rating));
+    return '★'.repeat(fullStars) + '☆'.repeat(5 - fullStars);
+}
 ---
 
 <a
@@ -38,6 +45,14 @@ const { game } = Astro.props;
             )}
 
             <p class="text-slate-400 mb-4 text-sm line-clamp-2" data-testid="game-description">{game.description}</p>
+
+            <div class="mb-4 text-sm" data-testid="game-rating">
+                {game.starRating === null ? (
+                    <span class="text-slate-500">No rating yet</span>
+                ) : (
+                    <span class="text-yellow-400">{formatWholeStars(game.starRating)}</span>
+                )}
+            </div>
 
             <div class="mt-4 text-sm text-blue-400 font-medium flex items-center">
                 <span>View details</span>
