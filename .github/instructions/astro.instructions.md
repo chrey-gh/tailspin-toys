@@ -20,6 +20,7 @@ import { getDatabase } from '../lib/db';
 import { getAllGames } from '../lib/games';
 
 interface Props {
+  /** Page title shown in the document head. */
   title: string;
 }
 
@@ -31,6 +32,13 @@ const games = await getAllGames(getDatabase());
   {games.map((game) => <GameCard {game} />)}
 </Layout>
 ```
+
+### Component contracts and comments
+
+- Define a `Props` interface in the frontmatter of every reusable component, layout, and page that accepts props.
+- Document each `Props` interface and its non-obvious fields with concise TSDoc comments so the component contract is self-explanatory.
+- Explain intent and non-obvious decisions in comments; do not restate markup, expressions, or control flow that is already clear from the code.
+- Keep comments synchronized with the implementation. An outdated comment is a defect and must be corrected or removed when the related code changes.
 
 ## Layouts
 
@@ -44,6 +52,7 @@ const games = await getAllGames(getDatabase());
 ```astro
 ---
 interface Props {
+  /** Text rendered in the document title. */
   title: string;
 }
 const { title } = Astro.props;

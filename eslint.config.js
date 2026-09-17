@@ -30,6 +30,19 @@ export default [
     },
   },
 
+  // Keep TypeScript object contracts and type formatting consistent.
+  {
+    files: ["**/*.ts"],
+    rules: {
+      "@typescript-eslint/array-type": ["error", { default: "array-simple" }],
+      "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        { allowExpressions: true, allowTypedFunctionExpressions: true },
+      ],
+    },
+  },
+
   // Astro files
   ...eslintPluginAstro.configs.recommended,
 

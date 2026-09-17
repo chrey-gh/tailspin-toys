@@ -45,12 +45,17 @@ import { asc, count, eq } from 'drizzle-orm';
 import type { Database } from './db';
 import { games } from '../../db/schema';
 
+/** Returns all game ids in the stable order used by static route generation. */
 export async function getAllGameIds(db: Database): Promise<number[]> {
   const rows = await db.select({ id: games.id }).from(games).orderBy(asc(games.title));
   return rows.map((r) => r.id);
 }
 ```
 
+- Every exported function in `db/**/*.ts` and `src/lib/*.ts` must have a TSDoc/JSDoc comment.
+- Describe the function's purpose, every parameter, and its return value. For data-access helpers, explicitly describe the injectable `db` parameter and how it supports in-memory tests.
+- Keep comments focused on intent and invariants. Do not duplicate SQL, query chaining, or other implementation details that are already apparent from the code.
+- Update or remove comments when the implementation changes; stale documentation is a bug.
 - Always `order by` a stable column (title) so static builds are deterministic.
 - Map raw rows to the app-facing `Game`/`Publisher`/`Category` types in one place; don't leak Drizzle row shapes into components.
 - Keep ordering/lookup logic in `games.ts`, not in pages.
